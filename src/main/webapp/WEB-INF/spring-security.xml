@@ -2,18 +2,26 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+    <!--
+       1.http auto-config:默认的策略进行访问控制，包括一个默认的访问登录界面(我们在这个项目中并没有提供登陆的界面，稍后会说到)
+       2.authentication-manager：认证管理器负责确定用户的身份，认证管理器由AuthenticationManager接口定义，这里我们就用了缓存的用户信息
+       3.intercept-url pattern :通过pattern指定当前intercept-url定义应当作用于哪些url。
+       4.logout：匹配我们退出登录的url 在我们的Spring Security4.x中，我们需要关闭csrf才能够使用/logout。
+    -->
     <http auto-config="true">
-        <intercept-url pattern="/hello*" access="ROLE_USER"/>
+        <intercept-url pattern="/admin**" access="hasRole('ROLE_USER')"/>
+        <logout logout-url="/logout" logout-success-url="/logoutPage" invalidate-session="true"/>
+        <csrf disabled="true" />
     </http>
 
     <authentication-manager>
         <authentication-provider>
             <user-service>
-                <user name="admin" password="123456" authorities="ROLE_USER"/>
+                <user name="admin" password="123" authorities="ROLE_USER" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

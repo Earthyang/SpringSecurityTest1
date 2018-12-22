@@ -6,11 +6,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/hello")
 public class HelloController {
-    @RequestMapping(method= RequestMethod.GET)
-    public ModelAndView printHello(){
-        return new ModelAndView("hello","message","Hello Spring Security!");
+    @RequestMapping(value = {"/" ,"/welcome"},method = RequestMethod.GET)
+    public ModelAndView homePage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title","Hello world");
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
 
+    @RequestMapping(value = {"/logoutPage"},method = RequestMethod.GET)
+    public ModelAndView logoutPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("logout");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/admin",method = RequestMethod.GET)
+    public ModelAndView adminPage(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title","Please log in");
+        modelAndView.setViewName("admin");
+        return modelAndView;
     }
 }
